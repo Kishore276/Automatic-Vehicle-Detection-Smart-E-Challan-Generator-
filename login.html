@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Traffic Violation Management System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #0d47a1;
+            --accent-color: #ff4081;
+            --success-color: #00c853;
+            --warning-color: #ffd600;
+            --danger-color: #d50000;
+            --light-bg: #f5f7fa;
+            --dark-text: #263238;
+            --light-text: #ffffff;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-container {
+            background: var(--light-text);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .auth-header h4 {
+            color: var(--dark-text);
+            font-weight: 600;
+        }
+
+        .form-control {
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .btn-auth {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            width: 100%;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--dark-text);
+        }
+
+        .auth-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-switch {
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        #signupForm {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Login Form -->
+        <div id="loginForm">
+            <div class="auth-header">
+                <i class="fas fa-traffic-light"></i>
+                <h4>Welcome Back</h4>
+                <p class="text-muted">Login to your account</p>
+            </div>
+            <form onsubmit="return handleLogin(event)">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="loginUsername" placeholder="Username" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-auth">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </button>
+            </form>
+            <div class="auth-footer">
+                <p>Don't have an account? <span class="auth-switch" onclick="toggleForm('signup')">Sign Up</span></p>
+            </div>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signupForm">
+            <div class="auth-header">
+                <i class="fas fa-user-plus"></i>
+                <h4>Create Account</h4>
+                <p class="text-muted">Register as a new user</p>
+            </div>
+            <form onsubmit="return handleSignup(event)">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="signupUsername" placeholder="Username" required>
+                </div>
+                <div class="mb-3">
+                    <input type="email" class="form-control" id="signupEmail" placeholder="Email" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="signupPassword" placeholder="Password" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="btn btn-auth">
+                    <i class="fas fa-user-plus me-2"></i>Sign Up
+                </button>
+            </form>
+            <div class="auth-footer">
+                <p>Already have an account? <span class="auth-switch" onclick="toggleForm('login')">Login</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Admin credentials
+        const ADMIN_CREDENTIALS = {
+            username: 'admin',
+            password: 'admin123'
+        };
+
+        // Toggle between login and signup forms
+        function toggleForm(form) {
+            document.getElementById('loginForm').style.display = form === 'login' ? 'block' : 'none';
+            document.getElementById('signupForm').style.display = form === 'signup' ? 'block' : 'none';
+        }
+
+        // Handle Login
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Check for admin login
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                localStorage.setItem('userRole', 'admin');
+                localStorage.setItem('username', username);
+                window.location.href = '/index.html';
+                return false;
+            }
+
+            // Check for user login
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                localStorage.setItem('userRole', 'user');
+                localStorage.setItem('username', username);
+                window.location.href = '/index.html';
+            } else {
+                Swal.fire('Error', 'Invalid username or password', 'error');
+            }
+            return false;
+        }
+
+        // Handle Signup
+        function handleSignup(event) {
+            event.preventDefault();
+            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                Swal.fire('Error', 'Passwords do not match', 'error');
+                return false;
+            }
+
+            // Get existing users
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+            // Check if username already exists
+            if (users.some(u => u.username === username)) {
+                Swal.fire('Error', 'Username already exists', 'error');
+                return false;
+            }
+
+            // Add new user
+            users.push({ username, email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+
+            Swal.fire({
+                title: 'Success!',
+                text: 'Account created successfully. Please login.',
+                icon: 'success',
+                confirmButtonColor: '#1a237e'
+            }).then(() => {
+                toggleForm('login');
+            });
+
+            return false;
+        }
+
+        // Check if user is already logged in
+        window.onload = function() {
+            const userRole = localStorage.getItem('userRole');
+            if (userRole) {
+                window.location.href = '/index.html';
+            }
+        }
+    </script>
+</body>
+</html> 
