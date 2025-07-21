@@ -57,12 +57,9 @@ pip install -r requirements.txt
 python app.py
 
 ## Future Enhancements
-
-- Admin login & dashboard
 - Cloud deployment (e.g., AWS, Azure)
-- SMS/email notification to violators
 - Vehicle type classification (bike, car, truck, etc.)
-- Analytics dashboard for violation trends
+
 
 ## Developed By
 
