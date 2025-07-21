@@ -13,14 +13,18 @@ An AI-powered traffic surveillance system that detects vehicles, identifies numb
 - Repeat violation tracking
 - Live CCTV/webcam feed integration
 
-## Tech Stack
 
-Backend: Python, Flask  
-Detection: OpenCV, YOLO  
-OCR: EasyOCR  
-Storage: JSON, CSV  
-Frontend: HTML/CSS, Bootstrap  
-Deployment: Localhost, Vercel  
+## 🛠️ Tech Stack
+
+| Component         | Technology            |
+|------------------|------------------------|
+| Backend           | Python, Flask          |
+| Detection         | OpenCV, YOLO           |
+| OCR               | EasyOCR                |
+| Storage           | JSON, CSV              |
+| Frontend          | HTML/CSS, Bootstrap    |
+| Deployment Ready  | Localhost, Vercel      |
+
 
 ## Folder Structure
 
