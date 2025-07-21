@@ -32,33 +32,49 @@ An AI-powered traffic surveillance system that detects vehicles, identifies numb
 
 ## 📂 Folder Structure
 
-📁 project-root/
+project-root/
 │
-├── 📁 camera_feed/ # Real-time video processing
-├── 📁 static/ # Frontend assets
-├── 📁 templates/ # HTML templates (Flask)
-├── 📁 uploads/ # Saved violation screenshots/videos
-├── 📄 app.py # Main Flask app
-├── 📄 vehicle_detection.py # Core logic for object detection
-├── 📄 plate_extractor.py # EasyOCR-based number plate reader
-├── 📄 challan_generator.py # Generates and saves challans
-├── 📄 data.json # Stores vehicle data
-├── 📄 requirements.txt # Python dependencies
-└── 📄 README.md
+├── camera_feed/              # Real-time video processing scripts
+├── static/                   # Frontend assets (CSS, JS)
+├── templates/                # HTML templates (Flask)
+├── uploads/                  # Saved screenshots or violation videos
+│
+├── app.py                    # Main Flask application
+├── vehicle_detection.py      # Object detection logic
+├── plate_extractor.py        # EasyOCR-based plate recognition
+├── challan_generator.py      # E-challan creation and saving
+├── data.json                 # Stores vehicle and violation data
+├── requirements.txt          # Python dependencies
+└── README.md                 # Project documentation
 
 
 ---
+🚀 How to Run
+Clone the repository
 
-## 🚀 How to Run
-
-### 1. Clone the repository
-```bash
+bash
+Copy
+Edit
 git clone https://github.com/Kishore276/Automatic-Vehicle-Detection-Smart-E-Challan-Generator-.git
 cd Automatic-Vehicle-Detection-Smart-E-Challan-Generator-
+Install dependencies
+
+bash
+Copy
+Edit
 pip install -r requirements.txt
+Run the application
+
+bash
+Copy
+Edit
 python app.py
+Access the app in your browser
+
+arduino
+Copy
+Edit
+http://localhost:5000
 👨‍💻 Developed By
 Kishore Reddy
-🚀 Passionate about AI, automation, and building digital solutions.
-
-
+Passionate about AI, automation, and building digital solutions.
