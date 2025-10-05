@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Violation Management System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- QRious Library for QR Code Generation -->
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #0d47a1;
+            --accent-color: #ff4081;
+            --success-color: #00c853;
+            --warning-color: #ffd600;
+            --danger-color: #d50000;
+            --light-bg: #f5f7fa;
+            --dark-text: #263238;
+            --light-text: #ffffff;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--light-text) !important;
+        }
+
+        .navbar .btn {
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .btn-outline-light:hover {
+            background-color: var(--light-text);
+            color: var(--primary-color);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: var(--light-text);
+            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+            height: 100vh;
+            position: fixed;
+            padding-top: 2rem;
+            z-index: 1000;
+        }
+
+        .sidebar .list-group-item {
+            border: none;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .list-group-item:hover {
+            background-color: var(--light-bg);
+            transform: translateX(5px);
+        }
+
+        .sidebar .list-group-item.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+        }
+
+        .sidebar .list-group-item i {
+            width: 25px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        /* Card Styles */
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            background-color: var(--light-text);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            border-radius: 15px 15px 0 0 !important;
+        }
+
+        /* Stats Card Styles */
+        .stats-card {
+            background: var(--light-text);
+            border-radius: 15px;
+            padding: 1.5rem;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+
+        .stats-card.primary::before { background-color: var(--primary-color); }
+        .stats-card.success::before { background-color: var(--success-color); }
+        .stats-card.warning::before { background-color: var(--warning-color); }
+        .stats-card.danger::before { background-color: var(--danger-color); }
+
+        .stats-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .stats-card h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .stats-card p {
+            margin: 0.5rem 0 0 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Table Styles */
+        .table {
+            margin: 0;
+        }
+
+        .table th {
+            background-color: var(--light-bg);
+            border-bottom: 2px solid rgba(0,0,0,0.05);
+            font-weight: 600;
+            padding: 1rem;
+        }
+
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(0,0,0,0.02);
+        }
+
+        /* Status Badge Styles */
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: rgba(255, 214, 0, 0.2);
+            color: var(--warning-color);
+        }
+
+        .status-paid {
+            background-color: rgba(0, 200, 83, 0.2);
+            color: var(--success-color);
+        }
+
+        /* Button Styles */
+        .btn {
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            border: none;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            border: none;
+            color: var(--dark-text);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            border: none;
+        }
+
+        .btn-info {
+            background-color: var(--secondary-color);
+            border: none;
+            color: var(--light-text);
+        }
+
+        /* Search Box Styles */
+        .search-box {
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .input-group-text {
+            border-radius: 50px 0 0 50px;
+            background-color: var(--light-text);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        /* Action Buttons */
+        .action-buttons .btn {
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            margin: 0 0.2rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                margin-bottom: 1rem;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-traffic-light me-2"></i>
+                Traffic Violation Management
+            </a>
+            <div class="d-flex">
+                <!-- Admin Controls -->
+                <div id="adminControls" style="display: none;">
+                    <button class="btn btn-outline-light me-2" id="stopBtn" onclick="switchToggle(0)" style="display: none;">
+                        <i class="fas fa-power-off me-1"></i> Stop Detection
+                    </button>
+                    <button class="btn btn-outline-light me-2" id="startBtn" onclick="switchToggle(1)">
+                        <i class="fas fa-play me-1"></i> Start Detection
+                    </button>
+                    <button class="btn btn-primary me-2" onclick="addNewChallan()">
+                        <i class="fas fa-plus me-1"></i> Add Challan
+                    </button>
+                </div>
+                <!-- Logout Button -->
+                <button class="btn btn-outline-light" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar col-md-3 col-lg-2">
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action active">
+                <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+            </a>
+            <a href="./upload_video.html" class="list-group-item list-group-item-action admin-only">
+                <i class="fas fa-video me-2"></i> Upload Video
+            </a>
+            <a href="./about_project.html" class="list-group-item list-group-item-action">
+                <i class="fas fa-info-circle me-2"></i> About Project
+            </a>
+            <a href="./technology_used.html" class="list-group-item list-group-item-action">
+                <i class="fas fa-cogs me-2"></i> Technology
+            </a>
+            <a href="./guided_by.html" class="list-group-item list-group-item-action">
+                <i class="fas fa-user-tie me-2"></i> Guided By
+            </a>
+            <a href="./developed_by.html" class="list-group-item list-group-item-action">
+                <i class="fas fa-users me-2"></i> Developed By
+            </a>
+            <a href="./statistics.html" class="list-group-item list-group-item-action admin-only">
+                <i class="fas fa-chart-bar me-2"></i> Statistics
+            </a>
+            <a href="./settings.html" class="list-group-item list-group-item-action">
+                <i class="fas fa-cog me-2"></i> Settings
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- Page Title -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">Dashboard Overview</h2>
+                <div class="d-flex">
+                    <button class="btn btn-primary me-2" onclick="exportToExcel()">
+                        <i class="fas fa-file-excel me-1"></i> Export Data
+                    </button>
+                    <button class="btn btn-primary" onclick="printReport()">
+                        <i class="fas fa-print me-1"></i> Print Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="stats-card primary">
+                        <i class="fas fa-car text-primary"></i>
+                        <h3 id="totalVehicles">0</h3>
+                        <p>Total Vehicles Detected</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card success">
+                        <i class="fas fa-money-bill-wave text-success"></i>
+                        <h3 id="totalChallans">₹0</h3>
+                        <p>Total Challan Amount</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card warning">
+                        <i class="fas fa-check-circle text-warning"></i>
+                        <h3 id="paidChallans">0</h3>
+                        <p>Paid Challans</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card danger">
+                        <i class="fas fa-clock text-danger"></i>
+                        <h3 id="pendingChallans">0</h3>
+                        <p>Pending Challans</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <input type="text" class="form-control search-box" id="search" 
+                                       oninput="searchVehicle(this.value)" 
+                                       placeholder="Search by vehicle number...">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-end">
+                                <div class="btn-group me-2">
+                                    <button class="btn btn-outline-primary active" onclick="filterChallans('all')">All</button>
+                                    <button class="btn btn-outline-primary" onclick="filterChallans('pending')">Pending</button>
+                                    <button class="btn btn-outline-primary" onclick="filterChallans('paid')">Paid</button>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Sort By
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                                        <li><a class="dropdown-item" href="#" onclick="sortChallans('date-desc')">Date (Newest)</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="sortChallans('date-asc')">Date (Oldest)</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="sortChallans('amount-desc')">Amount (High to Low)</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="sortChallans('amount-asc')">Amount (Low to High)</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Challan Table -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Vehicle Challan Records</h5>
+                    <span class="badge bg-primary" id="recordCount">0 records</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Vehicle No</th>
+                                    <th>Date & Time</th>
+                                    <th>Challan Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <!-- Data will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let allvehicles = [];
+        let currentFilter = 'all';
+        let currentSort = 'date-desc';
+
+        function logout() {
+            // Clear user data from localStorage
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('username');
+            
+            // Redirect to login page
+            window.location.href = '/';
+        }
+
+        const searchVehicle = (searchTxt) => {
+            const searched = allvehicles.filter((vehicle) => {
+                return vehicle.vehicleNo.toLowerCase().includes(searchTxt.toLowerCase());
+            });
+            applyFiltersAndSort(searched);
+        };
+
+        const getTheItems = async () => {
+            try {
+                const response = await fetch("/getItems");
+                const items = await response.json();
+                allvehicles = items;
+                applyFiltersAndSort(allvehicles);
+            } catch (error) {
+                console.error("Error fetching items:", error);
+                Swal.fire('Error', 'Failed to fetch data. Please try again later.', 'error');
+            }
+        };
+
+        const updateStats = (vehicles) => {
+            const totalVehicles = vehicles.length;
+            const totalChallans = vehicles.reduce((sum, v) => sum + v.charge, 0);
+            const paidChallans = vehicles.filter(v => v.paid).length;
+            const pendingChallans = totalVehicles - paidChallans;
+
+            document.getElementById('totalVehicles').textContent = totalVehicles;
+            document.getElementById('totalChallans').textContent = `₹${totalChallans.toLocaleString()}`;
+            document.getElementById('paidChallans').textContent = paidChallans;
+            document.getElementById('pendingChallans').textContent = pendingChallans;
+            document.getElementById('recordCount').textContent = `${totalVehicles} records`;
+        };
+
+        const filterChallans = (filter) => {
+            currentFilter = filter;
+            applyFiltersAndSort(allvehicles);
+            
+            // Update active button
+            document.querySelectorAll('.btn-group .btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        };
+
+        const sortChallans = (sort) => {
+            currentSort = sort;
+            applyFiltersAndSort(allvehicles);
+        };
+
+        const applyFiltersAndSort = (vehicles) => {
+            // Apply filter
+            let filtered = vehicles;
+            if (currentFilter === 'pending') {
+                filtered = vehicles.filter(v => !v.paid);
+            } else if (currentFilter === 'paid') {
+                filtered = vehicles.filter(v => v.paid);
+            }
+
+            // Apply sort
+            filtered.sort((a, b) => {
+                if (currentSort === 'date-desc') {
+                    return new Date(b.time) - new Date(a.time);
+                } else if (currentSort === 'date-asc') {
+                    return new Date(a.time) - new Date(b.time);
+                } else if (currentSort === 'amount-desc') {
+                    return b.charge - a.charge;
+                } else if (currentSort === 'amount-asc') {
+                    return a.charge - b.charge;
+                }
+                return 0;
+            });
+
+            mapItems(filtered);
+            updateStats(filtered);
+        };
+
+        const generateReceipt = (vehicleNo, amount, paymentDate) => {
+            const receiptWindow = window.open('', '_blank');
+            receiptWindow.document.write(`
+                <html>
+                <head>
+                    <title>Payment Receipt</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body { font-family: 'Arial', sans-serif; padding: 20px; }
+                        .receipt {
+                            max-width: 800px;
+                            margin: 0 auto;
+                            padding: 20px;
+                            border: 2px solid #1a237e;
+                            border-radius: 10px;
+                        }
+                        .receipt-header {
+                            text-align: center;
+                            margin-bottom: 30px;
+                            border-bottom: 2px solid #1a237e;
+                            padding-bottom: 20px;
+                        }
+                        .receipt-header h1 {
+                            color: #1a237e;
+                            font-size: 24px;
+                            margin-bottom: 10px;
+                        }
+                        .receipt-body {
+                            margin-bottom: 30px;
+                        }
+                        .receipt-footer {
+                            text-align: right;
+                            margin-top: 50px;
+                            border-top: 1px solid #ddd;
+                            padding-top: 20px;
+                        }
+                        .qr-code {
+                            text-align: center;
+                            margin: 20px 0;
+                        }
+                        @media print {
+                            .no-print { display: none; }
+                            body { padding: 0; }
+                            .receipt { border: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="receipt">
+                        <div class="receipt-header">
+                            <h1>Traffic Violation Management System</h1>
+                            <p>Payment Receipt</p>
+                        </div>
+                        <div class="receipt-body">
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>Receipt No:</strong> ${Date.now()}
+                                </div>
+                                <div class="col-6 text-end">
+                                    <strong>Date:</strong> ${paymentDate}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <strong>Vehicle Number:</strong> ${vehicleNo}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <strong>Amount Paid:</strong> ₹${amount.toLocaleString()}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <strong>Payment Status:</strong> 
+                                    <span class="text-success">Successful</span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <strong>Payment Method:</strong> UPI
+                                </div>
+                            </div>
+                        </div>
+                        <div class="receipt-footer">
+                            <p>This is a computer-generated receipt.</p>
+                            <p>No signature required.</p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4 no-print">
+                        <button class="btn btn-primary" onclick="window.print()">Print Receipt</button>
+                    </div>
+                </body>
+                </html>
+            `);
+            receiptWindow.document.close();
+        };
+
+        const payChallan = (vehicleNo, charge) => {
+            const vehicle = allvehicles.find(v => v.vehicleNo === vehicleNo);
+            
+            // Generate UPI payment link
+            const upiLink = `upi://pay?pa=trafficchallan@upi&pn=Traffic%20E-Challan&am=${charge}&cu=INR&tn=Challan%20No%20${vehicleNo}`;
+            
+            // Create QR code using QRious library
+            const qr = new QRious({
+                value: upiLink,
+                size: 250,
+                background: '#ffffff',
+                foreground: '#000000',
+                level: 'H', // High error correction
+                padding: 25
+            });
+            
+            Swal.fire({
+                title: 'Pay Challan',
+                html: `
+                    <div class="text-left mb-4">
+                        <p><strong>Vehicle Number:</strong> ${vehicleNo}</p>
+                        <p><strong>Challan Amount:</strong> ₹${charge.toLocaleString()}</p>
+                        <p><strong>Date & Time:</strong> ${vehicle.time}</p>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <img src="${qr.toDataURL()}" class="img-fluid mb-3" style="max-width: 250px;" alt="Payment QR Code">
+                        <p class="mt-2 mb-1" style="font-size: 1.2rem; font-weight: 500;">Scan to pay ₹${charge.toLocaleString()}</p>
+                        <p class="text-muted small">Using any UPI payment app</p>
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Amount will be automatically set to ₹${charge.toLocaleString()}
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Confirm Payment',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#00c853'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const paymentDate = new Date().toLocaleString();
+                    fetch("/pay-challan", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            vehicleNo: vehicleNo,
+                            amount: charge,
+                            paymentDate: paymentDate
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        getTheItems();
+                        Swal.fire({
+                            title: 'Payment Successful!',
+                            text: `Challan of ₹${charge.toLocaleString()} has been paid successfully.`,
+                            icon: 'success',
+                            confirmButtonColor: '#00c853',
+                            showDenyButton: true,
+                            confirmButtonText: 'Download Receipt',
+                            denyButtonText: 'Close'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                generateReceipt(vehicleNo, charge, paymentDate);
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'Payment failed. Please try again.', 'error');
+                    });
+                }
+            });
+        };
+
+        const deleteItem = (vehicleNo) => {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d50000',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("/deleteItem", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ vehicleNo: vehicleNo }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        getTheItems();
+                        Swal.fire('Deleted!', 'Record has been deleted.', 'success');
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'Failed to delete record. Please try again.', 'error');
+                    });
+                }
+            });
+        };
+
+        const viewDetails = (vehicleNo) => {
+            const vehicle = allvehicles.find(v => v.vehicleNo === vehicleNo);
+            if (vehicle) {
+                Swal.fire({
+                    title: 'Vehicle Details',
+                    html: `
+                        <div class="text-left">
+                            <div class="mb-3">
+                                <i class="fas fa-car me-2 text-primary"></i>
+                                <strong>Vehicle Number:</strong> ${vehicle.vehicleNo}
+                            </div>
+                            <div class="mb-3">
+                                <i class="fas fa-calendar-alt me-2 text-muted"></i>
+                                <strong>Date & Time:</strong> ${vehicle.time}
+                            </div>
+                            <div class="mb-3">
+                                <i class="fas fa-rupee-sign me-2 text-success"></i>
+                                <strong>Challan Amount:</strong> ₹${vehicle.charge.toLocaleString()}
+                            </div>
+                            <div class="mb-3">
+                                <i class="fas ${vehicle.paid ? 'fa-check-circle text-success' : 'fa-clock text-warning'} me-2"></i>
+                                <strong>Status:</strong> 
+                                <span class="status-badge ${vehicle.paid ? 'status-paid' : 'status-pending'}">
+                                    ${vehicle.paid ? 'Paid' : 'Pending'}
+                                </span>
+                            </div>
+                        </div>
+                    `,
+                    icon: 'info',
+                    confirmButtonColor: '#1a237e'
+                });
+            }
+        };
+
+        const switchToggle = (myVal) => {
+            fetch("/setSwitch", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ switch: myVal }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Show appropriate alert based on status
+                Swal.fire({
+                    title: data.status === 'success' ? 'Success' : 'Notice',
+                    text: data.msg,
+                    icon: data.status,
+                    confirmButtonColor: '#1a237e'
+                });
+
+                // Toggle button visibility based on camera state
+                if (data.status === 'success') {
+                    const startBtn = document.getElementById('startBtn');
+                    const stopBtn = document.getElementById('stopBtn');
+                    if (myVal === 1) {
+                        startBtn.style.display = 'none';
+                        stopBtn.style.display = 'inline-block';
+                    } else {
+                        startBtn.style.display = 'inline-block';
+                        stopBtn.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => {
+                Swal.fire('Error', 'Failed to toggle detection. Please try again.', 'error');
+            });
+        };
+
+        const exportToExcel = () => {
+            // Implement Excel export functionality
+            Swal.fire({
+                title: 'Export Data',
+                html: `
+                    <div class="mb-3">
+                        <label class="form-label">Select Date Range</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input type="date" class="form-control" id="startDate">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input type="date" class="form-control" id="endDate">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Select Data to Export</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="exportAll" checked>
+                            <label class="form-check-label" for="exportAll">All Records</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="exportPending">
+                            <label class="form-check-label" for="exportPending">Pending Only</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="exportPaid">
+                            <label class="form-check-label" for="exportPaid">Paid Only</label>
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Export',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#1a237e',
+                preConfirm: () => {
+                    // Here you would implement the actual export logic
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve();
+                        }, 1000);
+                    });
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Success', 'Data exported successfully!', 'success');
+                }
+            });
+        };
+
+        const printReport = () => {
+            // Create a print-friendly version of the page
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Challan Report</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body { font-family: 'Arial', sans-serif; }
+                        .print-header { text-align: center; margin-bottom: 20px; }
+                        .print-header h1 { font-size: 24px; }
+                        .print-header p { font-size: 14px; color: #666; }
+                        .table { width: 100%; border-collapse: collapse; }
+                        .table th, .table td { padding: 8px; border: 1px solid #ddd; }
+                        .table th { background-color: #f5f5f5; }
+                        .print-footer { margin-top: 20px; text-align: right; font-size: 12px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="print-header">
+                            <h1>Traffic Violation Challan Report</h1>
+                            <p>Generated on ${new Date().toLocaleString()}</p>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Vehicle No</th>
+                                    <th>Date & Time</th>
+                                    <th>Challan Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${Array.from(document.querySelectorAll('#tableBody tr')).map(row => {
+                                    const cells = row.cells;
+                                    return `
+                                        <tr>
+                                            <td>${cells[0].textContent}</td>
+                                            <td>${cells[1].textContent}</td>
+                                            <td>${cells[2].textContent}</td>
+                                            <td>${cells[3].textContent}</td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                        <div class="print-footer">
+                            <p>This is a computer-generated document.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        };
+
+        // Initialize page
+        window.onload = function() {
+            const userRole = localStorage.getItem('userRole');
+            const username = localStorage.getItem('username');
+            
+            if (!userRole || !username) {
+                window.location.href = '/';
+                return;
+            }
+
+            // Show/hide admin controls
+            const adminControls = document.getElementById('adminControls');
+            const adminOnlyElements = document.querySelectorAll('.admin-only');
+            
+            if (userRole === 'admin') {
+                // Show admin controls and admin-only elements
+                adminControls.style.display = 'flex';
+                adminOnlyElements.forEach(el => el.style.display = 'block');
+            } else {
+                // Hide admin controls and admin-only elements
+                adminControls.style.display = 'none';
+                adminOnlyElements.forEach(el => el.style.display = 'none');
+            }
+
+            // Update welcome message
+            document.querySelector('.navbar-brand').innerHTML += ` <span class="small">| Welcome, ${username}</span>`;
+            
+            // Initialize the page and set up auto-refresh
+            getTheItems();
+            setInterval(getTheItems, 30000); // Refresh every 30 seconds
+        };
+
+        function addNewChallan() {
+            Swal.fire({
+                title: 'Add New Challan',
+                html: `
+                    <div class="mb-3">
+                        <label class="form-label">Vehicle Number</label>
+                        <input type="text" id="vehicleNo" class="form-control" placeholder="Enter vehicle number">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Challan Amount</label>
+                        <input type="number" id="challanAmount" class="form-control" placeholder="Enter amount">
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Add Challan',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#1a237e',
+                preConfirm: () => {
+                    const vehicleNo = document.getElementById('vehicleNo').value;
+                    const amount = parseInt(document.getElementById('challanAmount').value);
+                    
+                    if (!vehicleNo) {
+                        Swal.showValidationMessage('Please enter vehicle number');
+                        return false;
+                    }
+                    
+                    if (!amount || amount <= 0) {
+                        Swal.showValidationMessage('Please enter a valid amount');
+                        return false;
+                    }
+                    
+                    return { vehicleNo, amount };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/add-challan', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            vehicleNo: result.value.vehicleNo,
+                            charge: result.value.amount
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        Swal.fire('Success', 'Challan added successfully', 'success');
+                        getTheItems();
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'Failed to add challan', 'error');
+                    });
+                }
+            });
+        }
+
+        const mapItems = (items) => {
+            const tableBody = document.getElementById('tableBody');
+            const userRole = localStorage.getItem('userRole');
+            tableBody.innerHTML = '';
+
+            if (items.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center py-4">
+                            <i class="fas fa-search fa-2x mb-3 text-muted"></i>
+                            <p class="mb-0">No records found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            items.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-car me-2 text-primary"></i>
+                            <span>${item.vehicleNo}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar-alt me-2 text-muted"></i>
+                            <span>${item.time}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-rupee-sign me-2 text-success"></i>
+                            <span>${item.charge.toLocaleString()}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge ${item.paid ? 'status-paid' : 'status-pending'}">
+                            <i class="fas ${item.paid ? 'fa-check-circle' : 'fa-clock'} me-1"></i>
+                            ${item.paid ? 'Paid' : 'Pending'}
+                        </span>
+                        ${item.paid ? `<br><small class="text-muted">${item.payment_date || ''}</small>` : ''}
+                    </td>
+                    <td class="action-buttons">
+                        ${!item.paid ? `
+                            <button class="btn btn-sm btn-success" onclick="payChallan('${item.vehicleNo}', ${item.charge})">
+                                <i class="fas fa-money-bill-wave"></i> Pay
+                            </button>
+                        ` : `
+                            <button class="btn btn-sm btn-info" onclick="generateReceipt('${item.vehicleNo}', ${item.charge}, '${item.payment_date}')">
+                                <i class="fas fa-download"></i> Receipt
+                            </button>
+                        `}
+                        <button class="btn btn-sm btn-info" onclick="viewDetails('${item.vehicleNo}')">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        ${userRole === 'admin' ? `
+                            <button class="btn btn-sm btn-danger" onclick="deleteItem('${item.vehicleNo}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        ` : ''}
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Update statistics
+            updateStats(items);
+        };
+    </script>
+  </body>
+</html>
+
