@@ -1,0 +1,78 @@
+[
+    {
+        "vehicleNo": "AP 39 CD 5678",
+        "time": "10/02/2024 08:12:20",
+        "charge": 150,
+        "paid": true,
+        "paid_amount": 150,
+        "payment_date": "04/04/2025 23:51:24"
+    },
+    {
+        "vehicleNo": "AP 05 GH 2345",
+        "time": "11/02/2024 09:30:45",
+        "charge": 120,
+        "paid": true
+    },
+    {
+        "vehicleNo": "AP 16 KL 7890",
+        "time": "12/02/2024 10:55:10",
+        "charge": 180,
+        "paid": true
+    },
+    {
+        "vehicleNo": "AP 22 MN 4567",
+        "time": "13/02/2024 12:05:35",
+        "charge": 200,
+        "paid": true
+    },
+    {
+        "vehicleNo": "AP 31 PQ 1234",
+        "time": "14/02/2024 14:40:50",
+        "charge": 250,
+        "paid": true
+    },
+    {
+        "vehicleNo": "AP 44 RS 6789",
+        "time": "15/02/2024 16:15:25",
+        "charge": 175,
+        "paid": true
+    },
+    {
+        "vehicleNo": "AP 55 UV 3456",
+        "time": "16/02/2024 18:50:15",
+        "charge": 130,
+        "paid": true
+    },
+    {
+        "vehicleNo": "AP 66 WX 7891",
+        "time": "17/02/2024 20:10:40",
+        "charge": 160,
+        "paid": true,
+        "paid_amount": 160,
+        "payment_date": "04/04/2025 23:22:08"
+    },
+    {
+        "vehicleNo": "HR26005551",
+        "time": "31/03/2025 23:27:24",
+        "charge": 500,
+        "paid": false
+    },
+    {
+        "vehicleNo": "HR 2C K8169",
+        "time": "31/03/2025 23:27:31",
+        "charge": 200,
+        "paid": false
+    },
+    {
+        "vehicleNo": "AP 21 K 3679",
+        "time": "04/04/2025 23:32:04",
+        "charge": 500,
+        "paid": false
+    },
+    {
+        "vehicleNo": "KA 01 QW 1234",
+        "time": "22/04/2025 08:00:27",
+        "charge": 500,
+        "paid": false
+    }
+]
