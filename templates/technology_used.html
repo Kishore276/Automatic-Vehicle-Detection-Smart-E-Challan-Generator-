@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology Used - Traffic Violation Management System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #0d47a1;
+            --accent-color: #ff4081;
+            --success-color: #00c853;
+            --warning-color: #ffd600;
+            --danger-color: #d50000;
+            --light-bg: #f5f7fa;
+            --dark-text: #263238;
+            --light-text: #ffffff;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--light-text) !important;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: var(--light-text);
+            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+            height: 100vh;
+            position: fixed;
+            padding-top: 2rem;
+            z-index: 1000;
+        }
+
+        .sidebar .list-group-item {
+            border: none;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .list-group-item:hover {
+            background-color: var(--light-bg);
+            transform: translateX(5px);
+        }
+
+        .sidebar .list-group-item.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+        }
+
+        .sidebar .list-group-item i {
+            width: 25px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        /* Card Styles */
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            background-color: var(--light-text);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            border-radius: 15px 15px 0 0 !important;
+        }
+
+        /* Technology Card Styles */
+        .tech-card {
+            background: var(--light-text);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .tech-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .tech-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .tech-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-description {
+            color: var(--dark-text);
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Category Section */
+        .category-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                margin-bottom: 1rem;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-traffic-light me-2"></i>
+                Traffic Violation Management
+            </a>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar col-md-3 col-lg-2">
+        <div class="list-group">
+            <a href="/" class="list-group-item list-group-item-action">
+                <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+            </a>
+            <a href="./upload_video.html" class="list-group-item list-group-item-action admin-only" style="display: none;">
+                <i class="fas fa-video me-2"></i> Upload Video
+            </a>
+            <a href="./about_project.html" class="list-group-item list-group-item-action">
+                <i class="fas fa-info-circle me-2"></i> About Project
+            </a>
+            <a href="./technology_used.html" class="list-group-item list-group-item-action active">
+                <i class="fas fa-cogs me-2"></i> Technology
+            </a>
+            <a href="./guided_by.html" class="list-group-item list-group-item-action">
+                <i class="fas fa-user-tie me-2"></i> Guided By
+            </a>
+            <a href="./developed_by.html" class="list-group-item list-group-item-action">
+                <i class="fas fa-users me-2"></i> Developed By
+            </a>
+            <a href="./statistics.html" class="list-group-item list-group-item-action admin-only">
+                <i class="fas fa-chart-bar me-2"></i> Statistics
+            </a>
+            <a href="./settings.html" class="list-group-item list-group-item-action">
+                <i class="fas fa-cog me-2"></i> Settings
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- Page Title -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">Technology Stack</h2>
+            </div>
+
+            <!-- Frontend Technologies -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="category-title">Frontend Technologies</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="tech-card">
+                                <i class="fab fa-html5 tech-icon"></i>
+                                <h5 class="tech-title">HTML5</h5>
+                                <p class="tech-description">Modern markup language for structuring web content</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="tech-card">
+                                <i class="fab fa-css3-alt tech-icon"></i>
+                                <h5 class="tech-title">CSS3</h5>
+                                <p class="tech-description">Advanced styling and layout capabilities</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="tech-card">
+                                <i class="fab fa-js tech-icon"></i>
+                                <h5 class="tech-title">JavaScript</h5>
+                                <p class="tech-description">Dynamic client-side functionality and interactivity</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="tech-card">
+                                <i class="fab fa-bootstrap tech-icon"></i>
+                                <h5 class="tech-title">Bootstrap 5</h5>
+                                <p class="tech-description">Responsive frontend framework for modern web design</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backend Technologies -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="category-title">Backend Technologies</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="tech-card">
+                                <i class="fab fa-python tech-icon"></i>
+                                <h5 class="tech-title">Python</h5>
+                                <p class="tech-description">Powerful programming language for backend development</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="tech-card">
+                                <i class="fas fa-flask tech-icon"></i>
+                                <h5 class="tech-title">Flask</h5>
+                                <p class="tech-description">Lightweight web framework for Python applications</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Computer Vision Technologies -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="category-title">Computer Vision & AI</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="tech-card">
+                                <i class="fas fa-eye tech-icon"></i>
+                                <h5 class="tech-title">OpenCV</h5>
+                                <p class="tech-description">Advanced computer vision library for image processing</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="tech-card">
+                                <i class="fas fa-brain tech-icon"></i>
+                                <h5 class="tech-title">Keras OCR</h5>
+                                <p class="tech-description">Deep learning-based optical character recognition</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Check user authentication on page load
+        window.onload = function() {
+            const userRole = localStorage.getItem('userRole');
+            const username = localStorage.getItem('username');
+            
+            if (!userRole || !username) {
+                window.location.href = '/';
+                return;
+            }
+
+            // Show/hide admin-only elements based on user role
+            const adminOnlyElements = document.querySelectorAll('.admin-only');
+            if (userRole === 'admin') {
+                adminOnlyElements.forEach(el => el.style.display = 'block');
+            } else {
+                adminOnlyElements.forEach(el => el.style.display = 'none');
+            }
+
+            // Update welcome message
+            document.querySelector('.navbar-brand').innerHTML += ` <span class="small">| Welcome, ${username}</span>`;
+        };
+
+        function logout() {
+            // Clear user data from localStorage
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('username');
+            
+            // Redirect to login page
+            window.location.href = '/';
+        }
+    </script>
+  </body>
+</html>
