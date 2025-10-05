@@ -1,0 +1,13 @@
+{
+    "users": [
+        {
+            "username": "admin",
+            "password": "admin123",
+            "email": "admin@system.com",
+            "role": "admin",
+            "created_at": "2024-01-01T00:00:00Z",
+            "last_login": null
+        }
+        
+    ]
+} 
