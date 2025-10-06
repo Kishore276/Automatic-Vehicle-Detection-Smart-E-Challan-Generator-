@@ -122,9 +122,3 @@ Moving-Vehicle-Registration-Plate-Detection-main/
 - Developed by: G.Yuva Kishore Reddy
 - Guided by: Dr. S. P. Balakannan
 
----
-<<<<<<< HEAD
-For any issues or contributions, please open an issue or pull request.
-=======
-For any issues or contributions, please open an issue or pull request.
->>>>>>> 51c83a94fde8c2ef8e1c673c8b1929c611086c81
