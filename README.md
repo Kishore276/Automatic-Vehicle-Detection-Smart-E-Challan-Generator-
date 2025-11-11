@@ -122,3 +122,4 @@ Moving-Vehicle-Registration-Plate-Detection-main/
 - Developed by: G.Yuva Kishore Reddy
 - Guided by: Dr. S. P. Balakannan
 
+---
