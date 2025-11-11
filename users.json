@@ -7,6 +7,14 @@
             "role": "admin",
             "created_at": "2024-01-01T00:00:00Z",
             "last_login": null
+        },
+        {
+            "username": "user",
+            "password": "user123",
+            "email": "user@system.com",
+            "role": "User",
+            "created_at": "2024-01-01T00:00:00Z",
+            "last_login": null
         }
         
     ]
