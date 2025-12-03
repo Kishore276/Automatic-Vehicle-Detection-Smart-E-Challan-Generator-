@@ -1,6 +1,5 @@
 # Automatic Vehicle Detection & Smart E-Challan Generator
 
-**Repository:** https://github.com/Kishore276/Automatic-Vehicle-Detection-Smart-E-Challan-Generator-.git
 
 ## Overview
 This project is a complete Traffic Violation Management System that uses computer vision and machine learning to detect vehicle license plates, generate electronic challans (e-challans), and manage payments through a modern web interface.
@@ -123,3 +122,15 @@ Moving-Vehicle-Registration-Plate-Detection-main/
 - Guided by: Dr. S. P. Balakannan
 
 ---
+## Developed By
+
+G.Yuva Kishore Reddy  
+Passionate about AI, automation, and building impactful tech solutions.
+
+## Contact
+
+Email: g.yuvakishorereddy@gmail.com   
+WhatsApp Channel: https://whatsapp.com/channel/0029Vb3la9V7NoZtA1GUI00d
+
+Star⭐ this repo if you found it helpful!
+
